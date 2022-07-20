@@ -1,8 +1,14 @@
 import React, { useState } from 'react'
 
 const initialTasks = [
-  'comer chocolate',
-  'ir velejar',
+  {
+    name: 'comer chocolate',
+    isDone: true,
+  },
+  {
+    name: 'velejar',
+    isDone: false,
+  },
 ]
 
 export function TodoList() {
@@ -10,7 +16,10 @@ export function TodoList() {
   const handleSubmit = (event) => {
     event.preventDefault()
     if (inputValue === '') return
-    setTasks([...tasks, inputValue])
+    setTasks([...tasks, {
+      name: inputValue,
+      isDone: false,
+    }])
     setInputValue('')
   }
   const handleInputChange = (ev) => setInputValue(ev.currentTarget.value.trim())
@@ -22,7 +31,7 @@ export function TodoList() {
       <input value={inputValue} onChange={handleInputChange} type="text" />
     </form>
     <ul>
-      {tasks.map((task, index) => <li key={index}>{task}</li>)}
+      {tasks.map((task, index) => <li key={index}>{task.name}</li>)}
     </ul>
   </div>
 }
