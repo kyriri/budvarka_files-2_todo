@@ -24,14 +24,14 @@ export function TodoList() {
   }
   const handleInputChange = (ev) => setInputValue(ev.currentTarget.value.trim())
   const [inputValue, setInputValue] = useState('')
-
+  const DoneTaskStyle = {textDecoration: 'line-through'}
 
   return <div>
     <form onSubmit={handleSubmit}>
       <input value={inputValue} onChange={handleInputChange} type="text" />
     </form>
     <ul>
-      {tasks.map((task, index) => <li key={index}>{task.name}</li>)}
+      {tasks.map((task, index) => <li key={index} style={task.isDone ? DoneTaskStyle : {}}>{task.name}</li>)}
     </ul>
   </div>
 }
