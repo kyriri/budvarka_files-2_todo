@@ -7,7 +7,7 @@ const rootElement = document.getElementById('root')
 
 ReactDOM.createRoot(rootElement).render(
   <React.StrictMode>
-      <Counter initialCount={0}/>
+      {/* <Counter initialCount={0}/> */}
       <TodoList/>
   </React.StrictMode>
 )
