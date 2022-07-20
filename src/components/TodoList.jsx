@@ -25,13 +25,20 @@ export function TodoList() {
   const handleInputChange = (ev) => setInputValue(ev.currentTarget.value.trim())
   const [inputValue, setInputValue] = useState('')
   const DoneTaskStyle = {textDecoration: 'line-through'}
+  const handleClickOnTask = (clickedTask) => {
+    // the logic below presents an issue if there are 2 tasks with the same name
+    let index = tasks.findIndex(task => task.name === clickedTask.name)
+    let nextTasks = [...tasks]
+    nextTasks[index].isDone = !tasks[index].isDone
+    setTasks(nextTasks)
+  };
 
   return <div>
     <form onSubmit={handleSubmit}>
       <input value={inputValue} onChange={handleInputChange} type="text" />
     </form>
     <ul>
-      {tasks.map((task, index) => <li key={index} style={task.isDone ? DoneTaskStyle : {}}>{task.name}</li>)}
+      {tasks.map((task, index) => <li onClick={() => handleClickOnTask(task)} style={task.isDone ? DoneTaskStyle : {}} key={index}>{task.name}</li>)}
     </ul>
   </div>
 }
