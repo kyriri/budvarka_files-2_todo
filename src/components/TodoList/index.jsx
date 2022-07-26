@@ -22,7 +22,7 @@ function getNextStatus(currentStatus) {
 const initialTasks = [
   { name: 'comer chocolate', status: statusType.pending, id: generateID()},
   { name: 'velejar', status: statusType.pending, id: generateID()},
-  { name: 'tomar banho', status: statusType.pending, id: generateID()},
+  { name: 'tomar banho', status: statusType.done, id: generateID()},
   { name: 'varrer a casa', status: statusType.pending, id: generateID()},
   { name: 'preparar almoço', status: statusType.pending, id: generateID()},
 ]
@@ -43,6 +43,7 @@ export function TodoList() {
     }
     setTasks([...tasks, newTask])
     setInputValue('')
+    setFilter(filterType.pending)
   }
   const toggleTaskStatus = (clickedTask) => {
     const index = tasks.findIndex(task => task.id === clickedTask.id)
@@ -70,23 +71,45 @@ export function TodoList() {
     }
   }
 
-  return <div>
-    <form onSubmit={handleSubmit}>
-      <input value={inputValue} onChange={handleInputChange} type="text" />
-    </form>
-    <button onClick={() => setFilter(filterType.all)}>All tasks</button>
-    <button onClick={() => setFilter(filterType.done)}>Done</button>
-    <button onClick={() => setFilter(filterType.pending)}>Pending</button>
-    <ul>
-      {tasks.filter(validateTaskStatus).map((task) => (
-        <li
-          onClick={() => toggleTaskStatus(task)}
-          className={task.status === statusType.done ? 'done-task' : ''}
-          key={task.id}
-        >
-          {task.name}
-        </li>
-      ))}
-    </ul>
-  </div>
+  return <article>
+    <div className='input-area'>
+      <form onSubmit={handleSubmit}>
+        <label htmlFor='new-task'>Add new task (no spaces allowed): </label>
+        <input id='new-task' value={inputValue} onChange={handleInputChange} type='text' />
+      </form>
+    </div>
+    <div className='filters-area'>
+      <button 
+        onClick={() => setFilter(filterType.all)}
+        className={filter === filterType.all ? 'active' : undefined }
+      >
+        All tasks
+      </button>
+      <button 
+        onClick={() => setFilter(filterType.done)}
+        className={filter === filterType.done ? 'active' : undefined }
+      >
+        Done
+      </button>
+      <button 
+        onClick={() => setFilter(filterType.pending)}
+        className={filter === filterType.pending ? 'active' : undefined }
+      >
+        Pending
+      </button>
+    </div>
+    <div className='tasks-area'>
+      <ul>
+        {tasks.filter(validateTaskStatus).map((task) => (
+          <li
+            onClick={() => toggleTaskStatus(task)}
+            className={task.status === statusType.done ? 'done-task' : ''}
+            key={task.id}
+          >
+            {task.name}
+          </li>
+        ))}
+      </ul>
+    </div>
+  </article>
 }

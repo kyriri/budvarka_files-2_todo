@@ -1,4 +1,98 @@
+:root {
+  --corner-curvature: 3px;
+
+  --serif-font: Garamond, "American Typewriter", "Times New Roman", serif;
+  --sans-font: -apple-system, BlinkMacSystemFont, "Avenir Next", "Segoe UI", Helvetica, Arial, "Helvetica Neue", sans-serif;
+  --mono-font: Consolas, Menlo, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+
+  /* Body font size. By default, effectively 18.4px, based on 16px as 'root em' */
+  --base-fontsize: 0.9rem;
+
+  --active-tab-border: var(--accent);
+  --inactive-tab-border: var(--text-light);
+
+  /* Default (light) theme */
+  --bg: #fff;
+  --accent-bg: #f5f7ff;
+  --text: #212121;
+  --text-light: #585858;
+  --border: #d8dae1;
+  --accent: #0d47a1;
+  --accent-light: #b2dafa;
+  --code: #d81b60;
+  --preformatted: #444;
+  --marked: #ffdd33;
+  --disabled: #efefef;
+}
+
+/* Dark theme */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #212121;
+    --accent-bg: #2b2b2b;
+    --text: #dcdcdc;
+    --text-light: #ababab;
+    --border: #666;
+    --accent: #ffb300;
+    --accent-light: #ffecb3;
+    --code: #f06292;
+    --preformatted: #ccc;
+    --marked: #0d47a1;
+    --disabled: #111;
+  }
+}
+
+article {
+  font-family: var(--sans-font);
+  font-size: var(--base-fontsize);
+}
+
+.input-area {
+  padding-bottom: 1rem;
+}
+
+.filters-area {
+  display: flex;
+  justify-content: space-between;
+}
+
+.filters-area button {
+  color: var(--text-light);
+  background-color: var(--bg);
+  flex-grow: 1;
+  border: 0.5px solid var(--inactive-tab-border);
+  border-bottom: 1px solid var(--active-tab-border);
+  border-top-left-radius: var(--corner-curvature);
+  border-top-right-radius: var(--corner-curvature);
+}
+
+.filters-area button.active {
+  color: var(--text);
+  background-color: var(--accent-bg);
+  font-size: var(--base-fontsize) * 1.618;
+  font-weight: bold;
+  padding: 5px;
+  border: 1px solid var(--active-tab-border);
+  border-bottom: 0;
+}
+
+.tasks-area {
+  background-color: var(--accent-bg);
+  border: 1px solid var(--active-tab-border);
+  border-top: 0;
+  border-bottom-left-radius: var(--corner-curvature);
+  border-bottom-right-radius: var(--corner-curvature);
+}
+
+ul {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin: 0;
+  font-family: var(--sans-font);
+  font-size: var(--base-fontsize);
+}
+
 .done-task {
-  color: crimson;
+  color: var(--text-light);
   text-decoration: line-through;
 }
