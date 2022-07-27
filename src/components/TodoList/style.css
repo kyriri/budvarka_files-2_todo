@@ -42,6 +42,11 @@
   }
 }
 
+body {
+  background-color: var(--bg);
+  color: var(--text);
+}
+
 article {
   font-family: var(--sans-font);
   font-size: var(--base-fontsize);
@@ -49,6 +54,13 @@ article {
 
 .input-area {
   padding-bottom: 1rem;
+}
+
+.input-area input {
+  background-color: var(--bg);
+  color: var(--text);
+  border-color: var(--preformatted);
+  border-width: 1px;
 }
 
 .filters-area {
