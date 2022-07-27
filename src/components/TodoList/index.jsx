@@ -20,31 +20,33 @@ function getNextStatus(currentStatus) {
 }
 
 const initialTasks = [
-  { name: 'comer chocolate', status: statusType.pending, id: generateID()},
-  { name: 'velejar', status: statusType.pending, id: generateID()},
-  { name: 'tomar banho', status: statusType.done, id: generateID()},
-  { name: 'varrer a casa', status: statusType.pending, id: generateID()},
-  { name: 'preparar almoço', status: statusType.pending, id: generateID()},
+  { name: 'eat chocolate', status: statusType.pending, id: generateID() },
+  { name: 'go sailing', status: statusType.pending, id: generateID() },
+  { name: 'have dinner', status: statusType.done, id: generateID() },
+  { name: 'sleep 8h', status: statusType.pending, id: generateID() },
+  { name: 'make coffee', status: statusType.pending, id: generateID() },
 ]
 
 export function TodoList() {
   const [tasks, setTasks] = useState(initialTasks)
-  const [inputValue, setInputValue] = useState('')
   const [filter, setFilter] = useState(filterType.all)
 
-  const handleInputChange = (ev) => setInputValue(ev.currentTarget.value.trim())
-  const handleSubmit = (event) => {
-    event.preventDefault()
-    if (inputValue === '') return
+  const addTask = (name) => {
     const newTask = {
-      name: inputValue,
+      name,
       status: statusType.pending,
       id: generateID()
     }
     setTasks([...tasks, newTask])
-    setInputValue('')
-    setFilter(filterType.pending)
   }
+
+  const addTaskAndUpdateView = (text) => {
+    addTask(text)
+    if (filter === filterType.done) {
+      setFilter(filterType.all)
+    }
+  }
+
   const toggleTaskStatus = (clickedTask) => {
     const index = tasks.findIndex(task => task.id === clickedTask.id)
     const task = tasks[index]
@@ -73,43 +75,76 @@ export function TodoList() {
 
   return <article>
     <div className='input-area'>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor='new-task'>Add new task (no spaces allowed): </label>
-        <input id='new-task' value={inputValue} onChange={handleInputChange} type='text' />
-      </form>
+      <NewTodoListTaskForm onInput={addTaskAndUpdateView}/>
     </div>
     <div className='filters-area'>
-      <button 
-        onClick={() => setFilter(filterType.all)}
-        className={filter === filterType.all ? 'active' : undefined }
-      >
-        All tasks
-      </button>
-      <button 
-        onClick={() => setFilter(filterType.done)}
-        className={filter === filterType.done ? 'active' : undefined }
-      >
+      <FilterButton active={filter === filterType.all} type={filterType.all} onClick={setFilter}>
+        All Tasks
+      </FilterButton>
+      <FilterButton active={filter === filterType.done} type={filterType.done} onClick={setFilter}>
         Done
-      </button>
-      <button 
-        onClick={() => setFilter(filterType.pending)}
-        className={filter === filterType.pending ? 'active' : undefined }
-      >
+      </FilterButton>
+      <FilterButton active={filter === filterType.pending} type={filterType.pending} onClick={setFilter}>
         Pending
-      </button>
+      </FilterButton>
     </div>
     <div className='tasks-area'>
       <ul>
         {tasks.filter(validateTaskStatus).map((task) => (
-          <li
-            onClick={() => toggleTaskStatus(task)}
-            className={task.status === statusType.done ? 'done-task' : ''}
+          <TodoListITem
+            item={task}
+            onClick={toggleTaskStatus}
             key={task.id}
-          >
-            {task.name}
-          </li>
+          />
         ))}
       </ul>
     </div>
   </article>
+}
+
+function NewTodoListTaskForm({onInput}) {
+  const [inputValue, setInputValue] = useState('')
+  const handleInputChange = (ev) => setInputValue(ev.currentTarget.value)
+
+  const handleSubmit = (event) => {
+    event.preventDefault()
+    const trimmedInput = inputValue.trim()
+    if (trimmedInput === '') {
+      setInputValue('')
+      return
+    }
+    onInput(trimmedInput)
+    setInputValue('')
+  }
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <label htmlFor='new-task'>Add new task: </label>
+      <input id='new-task' value={inputValue} onChange={handleInputChange} type='text' />
+    </form>
+  )
+}
+
+function TodoListITem({ item, onClick }) {
+  const handleClick = () => onClick(item)
+  return (
+    <li
+      onClick={handleClick}
+      className={item.status === statusType.done ? 'done-task' : ''}
+    >
+      {item.name}
+    </li>
+  )
+}
+
+
+function FilterButton({ type = filterType.all, active, onClick, children }) {
+  return (
+    <button
+      onClick={() => onClick(type)}
+      className={active ? 'active' : undefined}
+    >
+      {children}
+    </button>
+  )
 }
