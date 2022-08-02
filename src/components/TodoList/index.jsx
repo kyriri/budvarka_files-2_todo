@@ -68,6 +68,19 @@ export function TodoList() {
     ])
   }
 
+  const editTask = (clickedTask) => {
+    const index = tasks.findIndex(task => task.id === clickedTask.id)
+    const task = tasks[index]
+    setTasks([
+      ...tasks.slice(0, index),
+      {
+        ...task,
+        name: task.name + " (don't try to change me, love me as I am!)"
+      },
+      ...tasks.slice(index + 1)
+    ])
+  }
+
   const validateTaskStatus = (task) => {
     switch (filter) {
       case filterType.all:
@@ -102,6 +115,7 @@ export function TodoList() {
           <TodoListITem
             item={task}
             onTextClick={toggleTaskStatus}
+            onPencilClick={editTask}
             onTrashClick={deleteTask}
             key={task.id}
           />
@@ -134,8 +148,9 @@ function NewTodoListTaskForm({onInput}) {
   )
 }
 
-function TodoListITem({ item, onTextClick, onTrashClick }) {
+function TodoListITem({ item, onTextClick, onPencilClick, onTrashClick }) {
   const handleTextClick = () => onTextClick(item)
+  const handlePencilClick = () => onPencilClick(item)
   const handleTrashClick = () => onTrashClick(item)
   return (
     <li>
@@ -146,7 +161,8 @@ function TodoListITem({ item, onTextClick, onTrashClick }) {
       >
         {item.name}
       </div>
-      <div onClick={handleTrashClick}><img className='trash-can' src='icon-trash-can.png' alt='An image of trash can that, when clicked, deletes the task besides it'/></div>
+      <div onClick={handlePencilClick}><img src='icon-pencil.png' className='task-icon' alt='An image of a pencil can that, when clicked, allow the task text to be edited'/></div>
+      <div onClick={handleTrashClick}><img src='icon-trash-can.png' className='task-icon' alt='An image of a trash can that, when clicked, deletes the task besides it'/></div>
     </li>
   )
 }

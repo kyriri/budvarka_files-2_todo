@@ -110,18 +110,19 @@ ul {
 }
 
 li {
-  display: flex;
-  gap: 5px;
   cursor: default;
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 
-.trash-can {
+.task-icon {
   width: 11px;
   transition: 0.15s;
   opacity: 0.5;
 }
 
-.trash-can:hover {
+.task-icon:hover {
   opacity: 1;
   transform: scale(1.15);
 }
