@@ -108,3 +108,20 @@ ul {
   color: var(--text-light);
   text-decoration: line-through;
 }
+
+li {
+  display: flex;
+  gap: 5px;
+  cursor: default;
+}
+
+.trash-can {
+  width: 11px;
+  transition: 0.15s;
+  opacity: 0.5;
+}
+
+.trash-can:hover {
+  opacity: 1;
+  transform: scale(1.15);
+}

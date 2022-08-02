@@ -13,12 +13,6 @@ const statusType = {
   pending: 'PENDING'
 }
 
-function getNextStatus(currentStatus) {
-  return currentStatus === statusType.done
-    ? statusType.pending
-    : statusType.done
-}
-
 const initialTasks = [
   { name: 'eat chocolate', status: statusType.pending, id: generateID() },
   { name: 'go sailing', status: statusType.pending, id: generateID() },
@@ -26,6 +20,12 @@ const initialTasks = [
   { name: 'sleep 8h', status: statusType.pending, id: generateID() },
   { name: 'make coffee', status: statusType.pending, id: generateID() },
 ]
+
+function getNextStatus(currentStatus) {
+  return currentStatus === statusType.done
+    ? statusType.pending
+    : statusType.done
+}
 
 export function TodoList() {
   const [tasks, setTasks] = useState(initialTasks)
@@ -60,6 +60,14 @@ export function TodoList() {
     ])
   };
 
+  const deleteTask = (clickedTask) => {
+    const index = tasks.findIndex(task => task.id === clickedTask.id)
+    setTasks([
+      ...tasks.slice(0, index),
+      ...tasks.slice(index + 1)
+    ])
+  }
+
   const validateTaskStatus = (task) => {
     switch (filter) {
       case filterType.all:
@@ -93,7 +101,8 @@ export function TodoList() {
         {tasks.filter(validateTaskStatus).map((task) => (
           <TodoListITem
             item={task}
-            onClick={toggleTaskStatus}
+            onTextClick={toggleTaskStatus}
+            onTrashClick={deleteTask}
             key={task.id}
           />
         ))}
@@ -125,18 +134,22 @@ function NewTodoListTaskForm({onInput}) {
   )
 }
 
-function TodoListITem({ item, onClick }) {
-  const handleClick = () => onClick(item)
+function TodoListITem({ item, onTextClick, onTrashClick }) {
+  const handleTextClick = () => onTextClick(item)
+  const handleTrashClick = () => onTrashClick(item)
   return (
-    <li
-      onClick={handleClick}
-      className={item.status === statusType.done ? 'done-task' : ''}
-    >
-      {item.name}
+    <li>
+      <div>•</div>
+      <div
+        onClick={handleTextClick}
+        className={item.status === statusType.done ? 'done-task' : ''}
+      >
+        {item.name}
+      </div>
+      <div onClick={handleTrashClick}><img className='trash-can' src='icon-trash-can.png' alt='An image of trash can that, when clicked, deletes the task besides it'/></div>
     </li>
   )
 }
-
 
 function FilterButton({ type = filterType.all, active, onClick, children }) {
   return (
